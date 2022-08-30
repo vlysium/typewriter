@@ -7,7 +7,8 @@ let delay; //random delay
 let i = 0; //iterator
 
 let randomSound; //choose a random sound effect
-let soundList;
+let soundList; //parent to audio elements
+let soundEffectToggle; //toggle between sound effetcs on/off
 
 document.addEventListener("DOMContentLoaded", init);
 
@@ -17,6 +18,7 @@ function init() {
   savedText = typewrittenText.textContent;
   textLength = savedText.length;
   soundList = document.getElementById("sounds");
+  soundEffectToggle = document.getElementById("volume");
   //console.log(`savedText = ${savedText},`, `datatype: ${typeof savedText}`);
   //console.log(`textLength: ${textLength}`);
 
@@ -32,26 +34,28 @@ function writeText() {
     setTimeout(() => {
       typewrittenText.textContent += savedText.charAt([i]);
 
-      switch (savedText.charAt([i])) {
-        case " ":
-          let spaceSound = document.createElement("audio");
-          spaceSound.setAttribute("src", `assets/typespace.mp3`);
-          soundList.appendChild(spaceSound);
-          spaceSound.play();
-          spaceSound.addEventListener("ended", () => {
-            spaceSound.remove();
-          });
-          break;
+      if (soundEffectToggle.checked) {
+        switch (savedText.charAt([i])) {
+          case " ":
+            let spaceSound = document.createElement("audio");
+            spaceSound.setAttribute("src", `assets/typespace.mp3`);
+            soundList.appendChild(spaceSound);
+            spaceSound.play();
+            spaceSound.addEventListener("ended", () => {
+              spaceSound.remove();
+            });
+            break;
 
-        default:
-          let keySound = document.createElement("audio");
-          keySound.setAttribute("src", `assets/typekey${randomSound}.mp3`);
-          soundList.appendChild(keySound);
-          keySound.play();
-          keySound.addEventListener("ended", () => {
-            keySound.remove();
-          });
-          break;
+          default:
+            let keySound = document.createElement("audio");
+            keySound.setAttribute("src", `assets/typekey${randomSound}.mp3`);
+            soundList.appendChild(keySound);
+            keySound.play();
+            keySound.addEventListener("ended", () => {
+              keySound.remove();
+            });
+            break;
+        }
       }
 
       i++;
